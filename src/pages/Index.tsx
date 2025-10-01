@@ -78,18 +78,20 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/10">
       {/* Header */}
-      <header className="border-b border-border/50 backdrop-blur-sm sticky top-0 z-10 bg-background/80">
-        <div className="container mx-auto px-4 py-4">
+      <header className="border-b border-border/30 backdrop-blur-xl sticky top-0 z-10 bg-background/60">
+        <div className="container mx-auto px-4 py-5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-gradient-to-br from-primary to-accent rounded-lg">
-                <Music className="h-6 w-6 text-primary-foreground" />
+            <div className="flex items-center gap-4">
+              <div className="relative p-3 bg-gradient-to-br from-primary via-secondary to-accent rounded-2xl shadow-glow animate-float">
+                <Music className="h-7 w-7 text-black" />
               </div>
               <div>
-                <h1 className="text-xl font-bold">Private Suno Generator</h1>
-                <p className="text-xs text-muted-foreground">Local music generation • MICAH777X</p>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Music Generator
+                </h1>
+                <p className="text-xs text-muted-foreground font-medium">Create beautiful music locally</p>
               </div>
             </div>
           </div>
@@ -97,25 +99,34 @@ const Index = () => {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-10">
         <Tabs defaultValue="generate" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto mb-8">
-            <TabsTrigger value="generate" className="gap-2">
+          <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto mb-10 h-12 bg-card/50 backdrop-blur-sm border border-border/50 p-1 rounded-2xl">
+            <TabsTrigger 
+              value="generate" 
+              className="gap-2 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-secondary data-[state=active]:text-black font-semibold transition-all duration-300"
+            >
               <Music className="h-4 w-4" />
               Generate
             </TabsTrigger>
-            <TabsTrigger value="library" className="gap-2">
+            <TabsTrigger 
+              value="library" 
+              className="gap-2 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-secondary data-[state=active]:to-accent data-[state=active]:text-black font-semibold transition-all duration-300"
+            >
               <Library className="h-4 w-4" />
               Library
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="generate" className="space-y-6">
-            <div className="grid lg:grid-cols-2 gap-6 max-w-7xl mx-auto">
+          <TabsContent value="generate" className="space-y-8">
+            <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
               {/* Left Column - Form */}
               <div className="space-y-6">
-                <div className="bg-card border border-border rounded-lg p-6 shadow-lg">
-                  <h2 className="text-lg font-semibold mb-4">Create Your Track</h2>
+                <div className="bg-gradient-to-br from-card/60 to-card/30 backdrop-blur-xl border border-border/50 rounded-3xl p-8 shadow-glow">
+                  <div className="mb-6">
+                    <h2 className="text-xl font-bold mb-1">✨ Create Your Track</h2>
+                    <p className="text-sm text-muted-foreground">Describe what you want to hear</p>
+                  </div>
                   <GenerationForm
                     onGenerate={handleGenerate}
                     onRemix={handleRemix}
@@ -124,35 +135,46 @@ const Index = () => {
                 </div>
 
                 {/* Backend Connection Info */}
-                <Alert className="border-muted-foreground/20">
-                  <AlertCircle className="h-4 w-4" />
+                <Alert className="border-primary/20 bg-card/30 backdrop-blur-sm rounded-2xl">
+                  <AlertCircle className="h-4 w-4 text-primary" />
                   <AlertDescription className="text-xs">
                     <strong>Backend Setup:</strong> Configure your FastAPI backend URL in .env as 
-                    <code className="ml-1 px-1 py-0.5 bg-muted rounded text-xs">VITE_API_BASE_URL</code>
+                    <code className="ml-1 px-2 py-1 bg-muted/50 rounded-lg text-xs font-mono">VITE_API_BASE_URL</code>
                   </AlertDescription>
                 </Alert>
               </div>
 
               {/* Right Column - Output */}
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {progress && <ProgressIndicator progress={progress} />}
                 {error && (
-                  <Alert variant="destructive">
+                  <Alert variant="destructive" className="rounded-2xl">
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription>{error}</AlertDescription>
                   </Alert>
                 )}
                 {output && <TrackOutput output={output} />}
+                {!progress && !error && !output && (
+                  <div className="bg-gradient-to-br from-card/40 to-card/20 backdrop-blur-sm border border-border/30 rounded-3xl p-12 text-center">
+                    <div className="inline-block p-4 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl mb-4">
+                      <Music className="h-12 w-12 text-primary/50" />
+                    </div>
+                    <h3 className="text-lg font-semibold mb-2">Ready to create</h3>
+                    <p className="text-sm text-muted-foreground">Your generated track will appear here</p>
+                  </div>
+                )}
               </div>
             </div>
           </TabsContent>
 
           <TabsContent value="library">
-            <div className="text-center py-12">
-              <Library className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-              <h3 className="text-lg font-semibold mb-2">Library Coming Soon</h3>
-              <p className="text-sm text-muted-foreground">
-                Your generated tracks will appear here
+            <div className="text-center py-20">
+              <div className="inline-block p-5 bg-gradient-to-br from-secondary/10 to-accent/10 rounded-3xl mb-6 animate-float">
+                <Library className="h-16 w-16 text-secondary" />
+              </div>
+              <h3 className="text-2xl font-bold mb-3">Library Coming Soon</h3>
+              <p className="text-sm text-muted-foreground max-w-md mx-auto">
+                Your generated tracks will appear here. Each track will be saved with its unique seed and settings for easy remixing.
               </p>
             </div>
           </TabsContent>

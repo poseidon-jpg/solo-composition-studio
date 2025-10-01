@@ -66,24 +66,24 @@ export const AudioPlayer = ({ src, title, onDownload }: AudioPlayerProps) => {
   };
 
   return (
-    <div className="bg-card border border-border rounded-lg p-4 space-y-3">
+    <div className="bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-md border border-border/50 rounded-2xl p-5 space-y-4 shadow-soft">
       <audio ref={audioRef} src={src} preload="metadata" />
       
       {title && (
-        <div className="text-sm font-medium text-foreground">{title}</div>
+        <div className="text-sm font-semibold text-foreground/90">{title}</div>
       )}
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
         <Button
           size="icon"
           variant="outline"
           onClick={togglePlay}
-          className="hover:bg-primary hover:text-primary-foreground transition-colors"
+          className="h-12 w-12 rounded-xl border-2 border-primary/30 hover:bg-primary hover:text-primary-foreground hover:scale-110 hover:border-primary transition-all duration-300 shadow-sm"
         >
-          {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+          {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5 ml-0.5" />}
         </Button>
 
-        <div className="flex-1 space-y-1">
+        <div className="flex-1 space-y-2">
           <Slider
             value={[currentTime]}
             max={duration || 100}
@@ -91,14 +91,14 @@ export const AudioPlayer = ({ src, title, onDownload }: AudioPlayerProps) => {
             onValueChange={handleSeek}
             className="cursor-pointer"
           />
-          <div className="flex justify-between text-xs text-muted-foreground">
+          <div className="flex justify-between text-xs text-muted-foreground font-medium">
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 w-32">
-          <Volume2 className="h-4 w-4 text-muted-foreground" />
+        <div className="flex items-center gap-2.5 w-32">
+          <Volume2 className="h-4 w-4 text-muted-foreground/70" />
           <Slider
             value={[volume * 100]}
             max={100}
@@ -113,7 +113,7 @@ export const AudioPlayer = ({ src, title, onDownload }: AudioPlayerProps) => {
             size="icon"
             variant="ghost"
             onClick={onDownload}
-            className="hover:bg-accent"
+            className="h-10 w-10 rounded-xl hover:bg-accent/20 hover:text-accent hover:scale-110 transition-all duration-300"
           >
             <Download className="h-4 w-4" />
           </Button>
