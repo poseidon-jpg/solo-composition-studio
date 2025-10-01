@@ -1,9 +1,10 @@
-import { Download, FileJson, Hash } from "lucide-react";
+import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AudioPlayer } from "./AudioPlayer";
+import { TimelineVisualizer } from "./TimelineVisualizer";
 import { GenerationResponse, Timeline } from "@/types";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 
 interface TrackOutputProps {
   output: GenerationResponse;
@@ -20,12 +21,15 @@ export const TrackOutput = ({ output, timeline, metrics }: TrackOutputProps) => 
   };
 
   return (
-    <div className="space-y-5 animate-slide-up">
-      {/* Audio Player */}
-      <Card className="border-primary/20 shadow-glow bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-xl overflow-hidden rounded-3xl">
+    <div className="space-y-6 animate-slide-up">
+      {/* Audio Player - Orange/Pink gradient */}
+      <Card className="border-orange-500/30 shadow-lg bg-gradient-to-br from-orange-500/10 via-pink-500/10 to-rose-500/10 backdrop-blur-xl overflow-hidden rounded-[2rem]">
         <CardHeader className="pb-4">
-          <CardTitle className="text-lg font-bold flex items-center gap-2">
+          <CardTitle className="text-xl font-bold flex items-center gap-2">
             🎵 Generated Track
+            <Badge className="ml-auto bg-gradient-to-r from-orange-500 to-pink-500 text-black">
+              New
+            </Badge>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -37,118 +41,98 @@ export const TrackOutput = ({ output, timeline, metrics }: TrackOutputProps) => 
         </CardContent>
       </Card>
 
-      {/* Download Options */}
-      <Card className="bg-gradient-to-br from-card/60 to-card/30 backdrop-blur-xl border border-border/50 rounded-3xl overflow-hidden">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base font-bold flex items-center gap-2">
-            💾 Download
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 gap-3">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleDownload(output.paths.mix_wav, "track.wav")}
-              className="justify-start h-11 border-border/50 hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 rounded-xl"
-            >
-              <Download className="mr-2 h-3.5 w-3.5" />
-              <span className="font-medium">WAV 48kHz</span>
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleDownload(output.paths.mix_flac, "track.flac")}
-              className="justify-start h-11 border-border/50 hover:bg-secondary/10 hover:border-secondary/30 transition-all duration-300 rounded-xl"
-            >
-              <Download className="mr-2 h-3.5 w-3.5" />
-              <span className="font-medium">FLAC</span>
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleDownload(output.paths.acapella_wav, "acapella.wav")}
-              className="justify-start h-11 border-border/50 hover:bg-accent/10 hover:border-accent/30 transition-all duration-300 rounded-xl"
-            >
-              <Download className="mr-2 h-3.5 w-3.5" />
-              <span className="font-medium">Acapella</span>
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleDownload(output.paths.instrumental_wav, "instrumental.wav")}
-              className="justify-start h-11 border-border/50 hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 rounded-xl"
-            >
-              <Download className="mr-2 h-3.5 w-3.5" />
-              <span className="font-medium">Instrumental</span>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Metadata */}
-      <Card className="bg-gradient-to-br from-card/60 to-card/30 backdrop-blur-xl border border-border/50 rounded-3xl overflow-hidden">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base font-bold flex items-center gap-2">
-            📊 Metadata
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Tabs defaultValue="seed" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 h-10 bg-muted/30 backdrop-blur-sm p-1 rounded-xl">
-              <TabsTrigger value="seed" className="rounded-lg data-[state=active]:bg-primary/20 data-[state=active]:text-primary font-medium text-xs">
-                Seed
-              </TabsTrigger>
-              <TabsTrigger value="timeline" className="rounded-lg data-[state=active]:bg-secondary/20 data-[state=active]:text-secondary font-medium text-xs">
-                Timeline
-              </TabsTrigger>
-              <TabsTrigger value="metrics" className="rounded-lg data-[state=active]:bg-accent/20 data-[state=active]:text-accent font-medium text-xs">
-                Metrics
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="seed" className="space-y-3 mt-4">
-              <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl border border-primary/20">
-                <Hash className="h-5 w-5 text-primary" />
-                <code className="text-sm font-mono font-semibold text-foreground">{output.seed}</code>
-              </div>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Use this seed to reproduce the exact same generation
-              </p>
-            </TabsContent>
-            
-            <TabsContent value="timeline" className="space-y-3 mt-4">
-              {timeline ? (
-                <div className="p-4 bg-muted/30 backdrop-blur-sm rounded-2xl border border-border/30">
-                  <pre className="text-xs overflow-x-auto text-foreground/80">
-                    {JSON.stringify(timeline, null, 2)}
-                  </pre>
+      <div className="grid lg:grid-cols-2 gap-6">
+        {/* Download Options - Green gradient */}
+        <Card className="bg-gradient-to-br from-emerald-500/10 via-teal-500/10 to-cyan-500/10 backdrop-blur-xl border border-emerald-500/20 rounded-3xl overflow-hidden">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-bold flex items-center gap-2">
+              💾 Download Files
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-3">
+              <Button
+                variant="outline"
+                onClick={() => handleDownload(output.paths.mix_wav, "track.wav")}
+                className="justify-start h-12 border-emerald-500/30 hover:bg-emerald-500/20 hover:border-emerald-500/50 transition-all duration-300 rounded-xl group"
+              >
+                <Download className="mr-3 h-4 w-4 group-hover:scale-110 transition-transform" />
+                <div className="text-left flex-1">
+                  <div className="font-semibold text-sm">WAV 48kHz</div>
+                  <div className="text-xs text-muted-foreground">Lossless quality</div>
                 </div>
-              ) : (
-                <p className="text-sm text-muted-foreground text-center py-4">Timeline data not available</p>
-              )}
-            </TabsContent>
-            
-            <TabsContent value="metrics" className="space-y-3 mt-4">
-              {metrics ? (
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 bg-gradient-to-br from-secondary/10 to-secondary/5 rounded-2xl border border-secondary/20">
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => handleDownload(output.paths.mix_flac, "track.flac")}
+                className="justify-start h-12 border-teal-500/30 hover:bg-teal-500/20 hover:border-teal-500/50 transition-all duration-300 rounded-xl group"
+              >
+                <Download className="mr-3 h-4 w-4 group-hover:scale-110 transition-transform" />
+                <div className="text-left flex-1">
+                  <div className="font-semibold text-sm">FLAC</div>
+                  <div className="text-xs text-muted-foreground">Compressed lossless</div>
+                </div>
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => handleDownload(output.paths.acapella_wav, "acapella.wav")}
+                className="justify-start h-12 border-cyan-500/30 hover:bg-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300 rounded-xl group"
+              >
+                <Download className="mr-3 h-4 w-4 group-hover:scale-110 transition-transform" />
+                <div className="text-left flex-1">
+                  <div className="font-semibold text-sm">Acapella</div>
+                  <div className="text-xs text-muted-foreground">Vocals only</div>
+                </div>
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => handleDownload(output.paths.instrumental_wav, "instrumental.wav")}
+                className="justify-start h-12 border-blue-500/30 hover:bg-blue-500/20 hover:border-blue-500/50 transition-all duration-300 rounded-xl group"
+              >
+                <Download className="mr-3 h-4 w-4 group-hover:scale-110 transition-transform" />
+                <div className="text-left flex-1">
+                  <div className="font-semibold text-sm">Instrumental</div>
+                  <div className="text-xs text-muted-foreground">Music only</div>
+                </div>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Metadata - Purple gradient */}
+        <Card className="bg-gradient-to-br from-purple-500/10 via-violet-500/10 to-fuchsia-500/10 backdrop-blur-xl border border-purple-500/20 rounded-3xl overflow-hidden">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-bold flex items-center gap-2">
+              🔢 Track Info
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="p-4 bg-gradient-to-r from-purple-500/20 to-fuchsia-500/20 rounded-2xl border border-purple-500/30">
+                <div className="text-xs text-muted-foreground mb-1">Seed</div>
+                <code className="text-lg font-mono font-bold text-purple-300">{output.seed}</code>
+              </div>
+              
+              {metrics && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="p-4 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-2xl border border-blue-500/30">
                     <div className="text-xs text-muted-foreground font-medium mb-1">LUFS</div>
-                    <div className="text-2xl font-bold font-mono text-secondary">{metrics.lufs.toFixed(1)}</div>
+                    <div className="text-2xl font-bold font-mono text-cyan-300">{metrics.lufs.toFixed(1)}</div>
                   </div>
-                  <div className="p-4 bg-gradient-to-br from-accent/10 to-accent/5 rounded-2xl border border-accent/20">
-                    <div className="text-xs text-muted-foreground font-medium mb-1">True Peak</div>
-                    <div className="text-2xl font-bold font-mono text-accent">{metrics.true_peak.toFixed(1)}</div>
+                  <div className="p-4 bg-gradient-to-br from-pink-500/20 to-rose-500/20 rounded-2xl border border-pink-500/30">
+                    <div className="text-xs text-muted-foreground font-medium mb-1">Peak</div>
+                    <div className="text-2xl font-bold font-mono text-pink-300">{metrics.true_peak.toFixed(1)}</div>
                     <div className="text-xs text-muted-foreground font-medium">dBTP</div>
                   </div>
                 </div>
-              ) : (
-                <p className="text-sm text-muted-foreground text-center py-4">Metrics data not available</p>
               )}
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-      </Card>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Timeline Visualizer */}
+      {timeline && <TimelineVisualizer timeline={timeline} />}
     </div>
   );
 };

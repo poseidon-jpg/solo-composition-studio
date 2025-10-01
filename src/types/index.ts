@@ -1,3 +1,20 @@
+export interface Preset {
+  id: string;
+  name: string;
+  style_prompt: string;
+  lyrics?: string;
+  exclusions?: string;
+  sliders: {
+    weirdness: number;
+    style_influence: number;
+    audio_influence: number;
+  };
+  moments_dsl?: string;
+  target_seconds: number;
+  tags: string[];
+  created_at: string;
+}
+
 export interface TimelineSection {
   name: "Intro" | "Verse1" | "Hook1" | "Verse2" | "Hook2" | "Outro";
   bars: number;
